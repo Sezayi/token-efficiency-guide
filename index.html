@@ -140,6 +140,21 @@
   .card .win{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--navy);
     background:#FBF3DC;border:1px solid #EFD9A0;padding:3px 10px;border-radius:100px;}
 
+  /* ---------- Difficulty badges ---------- */
+  .diff{margin-left:auto;align-self:center;font-size:10px;font-weight:700;letter-spacing:.07em;
+    text-transform:uppercase;padding:3px 9px;border-radius:100px;white-space:nowrap;
+    border:1px solid transparent;flex-shrink:0;}
+  .diff.d1{color:#1E7A54;background:#E7F5EE;border-color:#BFE6D2;}   /* Direct */
+  .diff.d2{color:#9A6B0E;background:#FBF1DC;border-color:#EFD9A0;}   /* Gemiddeld */
+  .diff.d3{color:#5A47A6;background:#EDE9F7;border-color:#DCD5F0;}   /* Werk vooraf */
+  .difflegend{display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;margin-top:28px;
+    padding:18px 24px;background:var(--paper-2);border:1px solid var(--line);border-radius:6px;
+    font-size:13.5px;color:var(--slate);}
+  .difflegend .item{display:flex;align-items:center;gap:10px;}
+  .difflegend .diff{margin-left:0;}
+  .cat .side .mix{margin-top:14px;font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.02em;
+    border-top:1px solid var(--line);padding-top:12px;}
+
   /* ---------- Tools table ---------- */
   table{width:100%;border-collapse:collapse;margin-top:38px;font-size:15px;}
   th,td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line);}
@@ -247,7 +262,13 @@
   <div class="wrap">
     <div class="kicker">De volledige gids</div>
     <h2 class="title">25 technieken in vijf categorieën</h2>
-    <p class="section-lede">Van snelle prompt-ingrepen tot architectuurkeuzes. Begin bovenaan — prompt engineering en context management vragen de minste moeite voor de meeste winst. Bij elke techniek staat een <b>"Zo pas je het toe"</b>-blok: een concreet codevoorbeeld of stappenplan waarmee je vandaag nog kunt beginnen.</p>
+    <p class="section-lede">Van snelle prompt-ingrepen tot architectuurkeuzes. Elke techniek heeft een <b>moeilijkheidslabel</b> — en binnen elke categorie staan ze gesorteerd van makkelijk naar moeilijk, zodat je bovenaan begint. Bij elke techniek staat een <b>"Zo pas je het toe"</b>-blok: een concreet codevoorbeeld of stappenplan waarmee je vandaag nog kunt beginnen.</p>
+
+    <div class="difflegend">
+      <span class="item"><span class="diff d1">Direct</span> vandaag toe te passen, geen infrastructuur</span>
+      <span class="item"><span class="diff d2">Gemiddeld</span> wat opzet of configuratie nodig</span>
+      <span class="item"><span class="diff d3">Werk vooraf</span> training- of architectuurkeuze, blijvende winst</span>
+    </div>
 
     <!-- Cat 1 -->
     <div class="cat">
@@ -255,9 +276,10 @@
         <div class="cnum">Categorie 01</div>
         <h3>Prompt engineering</h3>
         <p>Snelste ingrepen. Geen infrastructuur nodig — puur hoe je de prompt opbouwt.</p>
+        <div class="mix">3× Direct · 1× Gemiddeld</div>
       </div>
       <div class="cards">
-        <div class="card"><h4><span class="idx">1</span>Trim de systeemprompt</h4><p>Verwijder herhaalde regels, verbale beleefdheid en overbodige constraints. Vervang alinea's door bondige bullet-directieven; gebruik delimiters in plaats van proza.</p>
+        <div class="card"><h4><span class="idx">1</span>Trim de systeemprompt<span class="diff d1">Direct</span></h4><p>Verwijder herhaalde regels, verbale beleefdheid en overbodige constraints. Vervang alinea's door bondige bullet-directieven; gebruik delimiters in plaats van proza.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Voor — 40+ tokens, veel ruis</span>
 "Je bent een vriendelijke, behulpzame AI-assistent. Help de
 gebruiker zo goed mogelijk. Wees altijd beleefd en netjes..."
@@ -266,7 +288,19 @@ gebruiker zo goed mogelijk. Wees altijd beleefd en netjes..."
 "Rol: support-agent. Taal: NL. Toon: bondig, correct."</pre></div>
           <span class="win">Vaak −20 tot −40% promptgrootte</span></div>
 
-        <div class="card"><h4><span class="idx">2</span>Snoei few-shot voorbeelden</h4><p>Elk voorbeeld betaal je bij <em>iedere</em> call opnieuw. Zodra het model betrouwbaar werkt, kun je er drastisch in snoeien.</p>
+        <div class="card"><h4><span class="idx">2</span>Stuur op korte output<span class="diff d1">Direct</span></h4><p>Output is de dure kant (±4–5× input-prijs). Eén zin in je systeemprompt begrenst 'm.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre>system = <span class="s">"Antwoord in max 3 zinnen. Geen inleiding,</span>
+<span class="s">geen herhaling van de vraag, geen afsluitende samenvatting."</span></pre></div>
+          <span class="win">Snijdt direct in output-tokens</span></div>
+
+        <div class="card"><h4><span class="idx">3</span>Structuur boven proza<span class="diff d1">Direct</span></h4><p>Scheid context, instructie en data met tags. Betrouwbaarder <em>én</em> je kunt de omlijstende taal wegsnijden.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">&lt;context&gt;</span>{documenten}<span class="k">&lt;/context&gt;</span>
+<span class="k">&lt;vraag&gt;</span>{vraag}<span class="k">&lt;/vraag&gt;</span>
+
+Beantwoord de vraag <span class="s">alleen</span> op basis van context.</pre></div>
+          <span class="win">Aanbevolen door Anthropic</span></div>
+
+        <div class="card"><h4><span class="idx">4</span>Snoei few-shot voorbeelden<span class="diff d2">Gemiddeld</span></h4><p>Elk voorbeeld betaal je bij <em>iedere</em> call opnieuw. Zodra het model betrouwbaar werkt, kun je er drastisch in snoeien.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><ol class="steps">
             <li>Meet de kwaliteit met 5 voorbeelden als nulmeting.</li>
             <li>Halveer naar 2, draai je testset opnieuw. Gelijk gebleven? Ga door.</li>
@@ -274,18 +308,6 @@ gebruiker zo goed mogelijk. Wees altijd beleefd en netjes..."
             <li>Zit gedrag écht vast? Verplaats de voorbeelden naar fine-tuning — dan betaal je ze nooit meer per call.</li>
           </ol></div>
           <span class="win">Honderden–duizenden tokens per call</span></div>
-
-        <div class="card"><h4><span class="idx">3</span>Stuur op korte output</h4><p>Output is de dure kant (±4–5× input-prijs). Eén zin in je systeemprompt begrenst 'm.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre>system = <span class="s">"Antwoord in max 3 zinnen. Geen inleiding,</span>
-<span class="s">geen herhaling van de vraag, geen afsluitende samenvatting."</span></pre></div>
-          <span class="win">Snijdt direct in output-tokens</span></div>
-
-        <div class="card"><h4><span class="idx">4</span>Structuur boven proza</h4><p>Scheid context, instructie en data met tags. Betrouwbaarder <em>én</em> je kunt de omlijstende taal wegsnijden.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">&lt;context&gt;</span>{documenten}<span class="k">&lt;/context&gt;</span>
-<span class="k">&lt;vraag&gt;</span>{vraag}<span class="k">&lt;/vraag&gt;</span>
-
-Beantwoord de vraag <span class="s">alleen</span> op basis van context.</pre></div>
-          <span class="win">Aanbevolen door Anthropic</span></div>
       </div>
     </div>
 
@@ -295,15 +317,17 @@ Beantwoord de vraag <span class="s">alleen</span> op basis van context.</pre></d
         <div class="cnum">Categorie 02</div>
         <h3>Context management</h3>
         <p>Bepaal wat er überhaupt de prompt in gaat. Vaak de grootste input-besparing.</p>
+        <div class="mix">1× Direct · 2× Gemiddeld · 2× Werk vooraf</div>
       </div>
       <div class="cards">
-        <div class="card"><h4><span class="idx">5</span>RAG in plaats van stuffing</h4><p>Plak niet het hele document in de prompt. Haal alleen de top-k relevante stukken op via vector-similariteit.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Haal 4 relevante stukken op i.p.v. 50 pagina's</span>
-stukken = vectorstore.<span class="k">similarity_search</span>(vraag, k=<span class="s">4</span>)
-context = <span class="s">"\n\n"</span>.join(s.page_content for s in stukken)</pre></div>
-          <span class="win">Vaak 5–10× minder input</span></div>
+        <div class="card"><h4><span class="idx">5</span>Dedupliceer context<span class="diff d1">Direct</span></h4><p>Retrieval levert vaak overlappende of dubbele stukken. Strip ze eruit — goedkoop en verliesvrij.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Gooi exacte duplicaten weg, behoud volgorde</span>
+gezien = <span class="k">set</span>()
+uniek = [s <span class="k">for</span> s <span class="k">in</span> stukken
+         <span class="k">if not</span> (s <span class="k">in</span> gezien <span class="k">or</span> gezien.add(s))]</pre></div>
+          <span class="win">Verliesvrije winst</span></div>
 
-        <div class="card"><h4><span class="idx">6</span>Gesprek samenvatten</h4><p>In lange chats groeit de context bij elke beurt. Comprimeer oude beurten tot een lopende samenvatting; houd alleen de recente letterlijk.</p>
+        <div class="card"><h4><span class="idx">6</span>Gesprek samenvatten<span class="diff d2">Gemiddeld</span></h4><p>In lange chats groeit de context bij elke beurt. Comprimeer oude beurten tot een lopende samenvatting; houd alleen de recente letterlijk.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">from</span> langchain.memory <span class="k">import</span> \
     ConversationSummaryBufferMemory
 
@@ -312,14 +336,20 @@ memory = <span class="k">ConversationSummaryBufferMemory</span>(
     llm=llm, max_token_limit=<span class="s">1000</span>)</pre></div>
           <span class="win">Stopt lineaire groei</span></div>
 
-        <div class="card"><h4><span class="idx">7</span>Prompt-compressie — LLMLingua</h4><p>Een klein model schrapt laag-informatieve tokens vóór het dure model ze ziet. Taak-agnostisch, plug-and-play op lange context.</p>
+        <div class="card"><h4><span class="idx">7</span>Prompt-compressie — LLMLingua<span class="diff d2">Gemiddeld</span></h4><p>Een klein model schrapt laag-informatieve tokens vóór het dure model ze ziet. Taak-agnostisch, plug-and-play op lange context.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">from</span> llmlingua <span class="k">import</span> PromptCompressor
 c = <span class="k">PromptCompressor</span>()
 <span class="c"># rate=0.5 → ongeveer 2× korter</span>
 korter = c.<span class="k">compress_prompt</span>(context, rate=<span class="s">0.5</span>)</pre></div>
           <span class="win">2–20× minder tokens · Microsoft Research</span></div>
 
-        <div class="card"><h4><span class="idx">8</span>Gist tokens</h4><p>Geavanceerder: leer het model een vaste prompt samen te persen tot enkele "gist"-tokens die je daarna cachet en hergebruikt.</p>
+        <div class="card"><h4><span class="idx">8</span>RAG in plaats van stuffing<span class="diff d3">Werk vooraf</span></h4><p>Plak niet het hele document in de prompt. Haal alleen de top-k relevante stukken op via vector-similariteit. Vergt een vectorstore, maar levert de grootste input-winst.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Haal 4 relevante stukken op i.p.v. 50 pagina's</span>
+stukken = vectorstore.<span class="k">similarity_search</span>(vraag, k=<span class="s">4</span>)
+context = <span class="s">"\n\n"</span>.join(s.page_content for s in stukken)</pre></div>
+          <span class="win">Vaak 5–10× minder input</span></div>
+
+        <div class="card"><h4><span class="idx">9</span>Gist tokens<span class="diff d3">Werk vooraf</span></h4><p>Geavanceerder: leer het model een vaste prompt samen te persen tot enkele "gist"-tokens die je daarna cachet en hergebruikt.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><ol class="steps">
             <li>Kies de vaste instructie/preamble die bij elke call terugkomt.</li>
             <li>Fine-tune (of gebruik een gist-adapter) zodat die preamble in een paar tokens past.</li>
@@ -327,13 +357,6 @@ korter = c.<span class="k">compress_prompt</span>(context, rate=<span class="s">
             <li>Overweeg dit pas bij hoog volume — de winst (tot ~26×) betaalt de eenmalige trainingskost terug.</li>
           </ol></div>
           <span class="win">Tot ~26× · Stanford (arXiv:2304.08467)</span></div>
-
-        <div class="card"><h4><span class="idx">9</span>Dedupliceer context</h4><p>Retrieval levert vaak overlappende of dubbele stukken. Strip ze eruit — goedkoop en verliesvrij.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Gooi exacte duplicaten weg, behoud volgorde</span>
-gezien = <span class="k">set</span>()
-uniek = [s <span class="k">for</span> s <span class="k">in</span> stukken
-         <span class="k">if not</span> (s <span class="k">in</span> gezien <span class="k">or</span> gezien.add(s))]</pre></div>
-          <span class="win">Verliesvrije winst</span></div>
       </div>
     </div>
 
@@ -343,9 +366,10 @@ uniek = [s <span class="k">for</span> s <span class="k">in</span> stukken
         <div class="cnum">Categorie 03</div>
         <h3>Caching &amp; infrastructuur</h3>
         <p>Betaal niet twee keer voor hetzelfde. Grootste ROI van de hele lijst.</p>
+        <div class="mix">2× Direct · 2× Gemiddeld · 1× Werk vooraf</div>
       </div>
       <div class="cards">
-        <div class="card"><h4><span class="idx">10</span>Anthropic prompt caching</h4><p>Markeer je vaste prefix (systeemprompt, tools, grote docs) met <code>cache_control</code>. Cache-reads kosten nog maar 10% van normale input.</p>
+        <div class="card"><h4><span class="idx">10</span>Anthropic prompt caching<span class="diff d1">Direct</span></h4><p>Markeer je vaste prefix (systeemprompt, tools, grote docs) met <code>cache_control</code>. Cache-reads kosten nog maar 10% van normale input.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre>system=[{
     <span class="s">"type"</span>: <span class="s">"text"</span>,
     <span class="s">"text"</span>: GROTE_SYSTEEMPROMPT,
@@ -353,7 +377,7 @@ uniek = [s <span class="k">for</span> s <span class="k">in</span> stukken
 }]  <span class="c"># vanaf de 2e call binnen 5 min: ~90% goedkoper</span></pre></div>
           <span class="win">−90% op gecachete tokens · ✅ 13-07-2026</span></div>
 
-        <div class="card"><h4><span class="idx">11</span>OpenAI prompt caching</h4><p>Volledig automatisch — je hoeft niets te markeren. De enige regel: houd je vaste content vooraan en variabele input achteraan.</p>
+        <div class="card"><h4><span class="idx">11</span>OpenAI prompt caching<span class="diff d1">Direct</span></h4><p>Volledig automatisch — je hoeft niets te markeren. De enige regel: houd je vaste content vooraan en variabele input achteraan.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><ol class="steps">
             <li>Zet systeemprompt + vaste context altijd bovenaan (identieke prefix).</li>
             <li>Zet de wisselende gebruikersinput onderaan.</li>
@@ -362,7 +386,7 @@ uniek = [s <span class="k">for</span> s <span class="k">in</span> stukken
           </ol></div>
           <span class="win">Stapelt met Batch tot ~75% · ✅ 13-07-2026</span></div>
 
-        <div class="card"><h4><span class="idx">12</span>Batch-API's</h4><p>Werk dat niet direct terug hoeft (evals, bulk-classificatie, nachtelijke generatie) draai je async voor de helft van de prijs.</p>
+        <div class="card"><h4><span class="idx">12</span>Batch-API's<span class="diff d2">Gemiddeld</span></h4><p>Werk dat niet direct terug hoeft (evals, bulk-classificatie, nachtelijke generatie) draai je async voor de helft van de prijs.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Anthropic — 50% korting, klaar binnen 24u</span>
 client.messages.batches.<span class="k">create</span>(requests=[
     {<span class="s">"custom_id"</span>: <span class="s">"rij-1"</span>, <span class="s">"params"</span>: {...}},
@@ -370,14 +394,14 @@ client.messages.batches.<span class="k">create</span>(requests=[
 ])</pre></div>
           <span class="win">−50% · beide aanbieders · ✅</span></div>
 
-        <div class="card"><h4><span class="idx">13</span>Semantic caching (GPTCache)</h4><p>Cache op <em>betekenis</em>, niet op exacte tekst. "Wat kost verzending?" en "Hoeveel is de verzendkosten?" krijgen hetzelfde cache-antwoord — de LLM wordt overgeslagen.</p>
+        <div class="card"><h4><span class="idx">13</span>Semantic caching (GPTCache)<span class="diff d2">Gemiddeld</span></h4><p>Cache op <em>betekenis</em>, niet op exacte tekst. "Wat kost verzending?" en "Hoeveel is de verzendkosten?" krijgen hetzelfde cache-antwoord — de LLM wordt overgeslagen.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">from</span> gptcache.adapter <span class="k">import</span> openai
 <span class="c"># Drop-in: zelfde call, maar bijna-identieke</span>
 <span class="c"># vragen komen uit de cache i.p.v. het model</span>
 openai.ChatCompletion.<span class="k">create</span>(model=..., messages=...)</pre></div>
           <span class="win">Slaat de LLM volledig over</span></div>
 
-        <div class="card"><h4><span class="idx">14</span>KV-cache optimalisatie</h4><p>Voor wie zelf host: vLLM hergebruikt gedeelde prompt-prefixes over requests heen. Bespaart geheugen en verhoogt throughput — één vlag.</p>
+        <div class="card"><h4><span class="idx">14</span>KV-cache optimalisatie<span class="diff d3">Werk vooraf</span></h4><p>Voor wie zelf host: vLLM hergebruikt gedeelde prompt-prefixes over requests heen. Bespaart geheugen en verhoogt throughput — één vlag.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Prefix-caching aan bij het opstarten van vLLM</span>
 vllm serve mijn-model --enable-prefix-caching</pre></div>
           <span class="win">Throughput ↑ · self-host · docs.vllm.ai</span></div>
@@ -390,16 +414,22 @@ vllm serve mijn-model --enable-prefix-caching</pre></div>
         <div class="cnum">Categorie 04</div>
         <h3>Output-optimalisatie</h3>
         <p>De dure kant. Elke output-token telt ±4–5× zwaarder dan input.</p>
+        <div class="mix">2× Direct · 2× Gemiddeld</div>
       </div>
       <div class="cards">
-        <div class="card"><h4><span class="idx">15</span>max_tokens + stop-sequences</h4><p>Zet een harde bovengrens op de generatie en laat 'm vroeg stoppen. Je betaalt nooit meer voor gebazel dan nodig.</p>
+        <div class="card"><h4><span class="idx">15</span>max_tokens + stop-sequences<span class="diff d1">Direct</span></h4><p>Zet een harde bovengrens op de generatie en laat 'm vroeg stoppen. Je betaalt nooit meer voor gebazel dan nodig.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre>client.messages.<span class="k">create</span>(
     ...,
     max_tokens=<span class="s">150</span>,              <span class="c"># harde cap</span>
     stop_sequences=[<span class="s">"\n\n"</span>])   <span class="c"># stop bij lege regel</span></pre></div>
           <span class="win">Geen betaling voor overtollige tokens</span></div>
 
-        <div class="card"><h4><span class="idx">16</span>Schema-gebonden output</h4><p>Dwing JSON volgens een schema af. Geen "Zeker! Hier is…"-narratie meer, compacte output, en geen re-prompts bij kapotte JSON.</p>
+        <div class="card"><h4><span class="idx">16</span>Enums boven proza<span class="diff d1">Direct</span></h4><p>Bij classificatie heb je geen zin nodig, alleen een label. Eén token in plaats van dertig.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre>system = <span class="s">"Classificeer de review. Antwoord met exact"</span>
+<span class="s">"één woord: POSITIEF | NEGATIEF | NEUTRAAL."</span></pre></div>
+          <span class="win">Tot 30× minder output-tokens</span></div>
+
+        <div class="card"><h4><span class="idx">17</span>Schema-gebonden output<span class="diff d2">Gemiddeld</span></h4><p>Dwing JSON volgens een schema af. Geen "Zeker! Hier is…"-narratie meer, compacte output, en geen re-prompts bij kapotte JSON.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">from</span> pydantic <span class="k">import</span> BaseModel
 <span class="k">class</span> Ticket(BaseModel):
     prioriteit: str
@@ -409,12 +439,7 @@ resp = client.responses.<span class="k">parse</span>(
     ..., text_format=Ticket)   <span class="c"># gegarandeerd valide</span></pre></div>
           <span class="win">Minder output + betrouwbaar parsen</span></div>
 
-        <div class="card"><h4><span class="idx">17</span>Enums boven proza</h4><p>Bij classificatie heb je geen zin nodig, alleen een label. Eén token in plaats van dertig.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre>system = <span class="s">"Classificeer de review. Antwoord met exact"</span>
-<span class="s">"één woord: POSITIEF | NEGATIEF | NEUTRAAL."</span></pre></div>
-          <span class="win">Tot 30× minder output-tokens</span></div>
-
-        <div class="card"><h4><span class="idx">18</span>Streaming + vroeg stoppen</h4><p>Stream het antwoord en stop met consumeren zodra je hebt wat je nodig hebt — bijvoorbeeld het eerste complete JSON-object.</p>
+        <div class="card"><h4><span class="idx">18</span>Streaming + vroeg stoppen<span class="diff d2">Gemiddeld</span></h4><p>Stream het antwoord en stop met consumeren zodra je hebt wat je nodig hebt — bijvoorbeeld het eerste complete JSON-object.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="k">for</span> chunk <span class="k">in</span> stream:
     buffer += chunk
     <span class="k">if</span> json_compleet(buffer):
@@ -429,9 +454,10 @@ resp = client.responses.<span class="k">parse</span>(
         <div class="cnum">Categorie 05</div>
         <h3>Architectuur &amp; ontwerp</h3>
         <p>Structurele keuzes. Meer werk vooraf, blijvende besparing achteraf.</p>
+        <div class="mix">4× Gemiddeld · 3× Werk vooraf</div>
       </div>
       <div class="cards">
-        <div class="card"><h4><span class="idx">19</span>Model-routing / cascade</h4><p>Niet elke taak heeft je duurste model nodig. Bepaal de moeilijkheid en route: simpel → klein model, moeilijk → vlaggenschip.</p>
+        <div class="card"><h4><span class="idx">19</span>Model-routing / cascade<span class="diff d2">Gemiddeld</span></h4><p>Niet elke taak heeft je duurste model nodig. Bepaal de moeilijkheid en route: simpel → klein model, moeilijk → vlaggenschip.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Simpele heuristiek als startpunt</span>
 model = (<span class="s">"claude-haiku"</span> <span class="k">if</span> len(vraag) &lt; <span class="s">200</span>
          <span class="k">and not</span> heeft_code(vraag)
@@ -439,7 +465,28 @@ model = (<span class="s">"claude-haiku"</span> <span class="k">if</span> len(vra
 <span class="c"># Later: laat RouteLLM de router leren</span></pre></div>
           <span class="win">−50 tot −85% op gemengd werk</span></div>
 
-        <div class="card"><h4><span class="idx">20</span>Distillatie / fine-tuning</h4><p>Fine-tune een klein model zodat je de lange instructie-preamble volledig kunt schrappen — het gedrag zit dan in de gewichten.</p>
+        <div class="card"><h4><span class="idx">20</span>Tool-hygiëne<span class="diff d2">Gemiddeld</span></h4><p>Elk tool-schema wordt bij <em>iedere</em> call meegestuurd. Geef het model alleen de tools die bij de huidige stap passen.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Niet alle 30 tools elke call — filter per stap</span>
+tools = [t <span class="k">for</span> t <span class="k">in</span> ALLE_TOOLS
+         <span class="k">if</span> relevant(t, huidige_stap)]
+<span class="c"># En: houd elke tool-beschrijving kort</span></pre></div>
+          <span class="win">Minder vaste overhead per call</span></div>
+
+        <div class="card"><h4><span class="idx">21</span>Map-reduce samenvatten<span class="diff d2">Gemiddeld</span></h4><p>Voor een enorm document: vat de stukken parallel samen (map) en combineer daarna de samenvattingen (reduce). Nooit één gigantische context.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># MAP — elk stuk apart (kleine calls, parallel)</span>
+delen = [llm(f<span class="s">"Vat samen: {c}"</span>) <span class="k">for</span> c <span class="k">in</span> chunks]
+<span class="c"># REDUCE — combineer de samenvattingen</span>
+eind = llm(f<span class="s">"Combineer tot één geheel: {delen}"</span>)</pre></div>
+          <span class="win">Begrenst context per call</span></div>
+
+        <div class="card"><h4><span class="idx">22</span>Templating / hergebruik<span class="diff d2">Gemiddeld</span></h4><p>Deterministische output (standaard e-mails, vaste rapporten) hoeft niet door de LLM. Template met code, roep het model alleen aan voor het variabele stukje.</p>
+          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Geen LLM-call voor de vaste romp</span>
+mail = TEMPLATE.<span class="k">format</span>(naam=naam, bedrag=bedrag)
+<span class="c"># LLM alleen voor het echt variabele deel</span>
+mail += llm(f<span class="s">"Schrijf 1 persoonlijke zin voor {naam}"</span>)</pre></div>
+          <span class="win">0 tokens voor het vaste deel</span></div>
+
+        <div class="card"><h4><span class="idx">23</span>Distillatie / fine-tuning<span class="diff d3">Werk vooraf</span></h4><p>Fine-tune een klein model zodat je de lange instructie-preamble volledig kunt schrappen — het gedrag zit dan in de gewichten.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><ol class="steps">
             <li>Verzamel 100–1.000 goede input/output-paren (bijv. uit je huidige logs).</li>
             <li>Fine-tune een klein model op die paren.</li>
@@ -448,14 +495,7 @@ model = (<span class="s">"claude-haiku"</span> <span class="k">if</span> len(vra
           </ol></div>
           <span class="win">Blijvende besparing per call</span></div>
 
-        <div class="card"><h4><span class="idx">21</span>Tool-hygiëne</h4><p>Elk tool-schema wordt bij <em>iedere</em> call meegestuurd. Geef het model alleen de tools die bij de huidige stap passen.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Niet alle 30 tools elke call — filter per stap</span>
-tools = [t <span class="k">for</span> t <span class="k">in</span> ALLE_TOOLS
-         <span class="k">if</span> relevant(t, huidige_stap)]
-<span class="c"># En: houd elke tool-beschrijving kort</span></pre></div>
-          <span class="win">Minder vaste overhead per call</span></div>
-
-        <div class="card"><h4><span class="idx">22</span>Multi-agent met smalle context</h4><p>Geef elke subagent alleen de plak context die hij nodig heeft — niet de volledige geschiedenis. Laat enkel de conclusie terugvloeien.</p>
+        <div class="card"><h4><span class="idx">24</span>Multi-agent met smalle context<span class="diff d3">Werk vooraf</span></h4><p>Geef elke subagent alleen de plak context die hij nodig heeft — niet de volledige geschiedenis. Laat enkel de conclusie terugvloeien.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><ol class="steps">
             <li>Splits de taak in deeltaken met een duidelijke, smalle scope.</li>
             <li>Geef elke subagent alleen zíjn stukje input, niet het hele dossier.</li>
@@ -464,21 +504,7 @@ tools = [t <span class="k">for</span> t <span class="k">in</span> ALLE_TOOLS
           </ol></div>
           <span class="win">Kleine context per call</span></div>
 
-        <div class="card"><h4><span class="idx">23</span>Map-reduce samenvatten</h4><p>Voor een enorm document: vat de stukken parallel samen (map) en combineer daarna de samenvattingen (reduce). Nooit één gigantische context.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># MAP — elk stuk apart (kleine calls, parallel)</span>
-delen = [llm(f<span class="s">"Vat samen: {c}"</span>) <span class="k">for</span> c <span class="k">in</span> chunks]
-<span class="c"># REDUCE — combineer de samenvattingen</span>
-eind = llm(f<span class="s">"Combineer tot één geheel: {delen}"</span>)</pre></div>
-          <span class="win">Begrenst context per call</span></div>
-
-        <div class="card"><h4><span class="idx">24</span>Templating / hergebruik</h4><p>Deterministische output (standaard e-mails, vaste rapporten) hoeft niet door de LLM. Template met code, roep het model alleen aan voor het variabele stukje.</p>
-          <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># Geen LLM-call voor de vaste romp</span>
-mail = TEMPLATE.<span class="k">format</span>(naam=naam, bedrag=bedrag)
-<span class="c"># LLM alleen voor het echt variabele deel</span>
-mail += llm(f<span class="s">"Schrijf 1 persoonlijke zin voor {naam}"</span>)</pre></div>
-          <span class="win">0 tokens voor het vaste deel</span></div>
-
-        <div class="card"><h4><span class="idx">25</span>Comprimeer opgehaalde chunks</h4><p>Combineer RAG met compressie: draai na retrieval een goedkope compressiestap over de chunks vóór ze het dure model in gaan.</p>
+        <div class="card"><h4><span class="idx">25</span>Comprimeer opgehaalde chunks<span class="diff d3">Werk vooraf</span></h4><p>Combineer RAG met compressie: draai na retrieval een goedkope compressiestap over de chunks vóór ze het dure model in gaan.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div><pre><span class="c"># RAG → compressie → pas dán het dure model</span>
 stukken = vectorstore.<span class="k">similarity_search</span>(vraag, k=<span class="s">6</span>)
 stukken = [c.<span class="k">compress_prompt</span>(s, rate=<span class="s">0.5</span>)
