@@ -3,133 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Token-efficiëntie — De praktische gids | Perpetuum</title>
+<title>Token-efficiëntie 2026 · De praktische gids | Perpetuum</title>
 <meta name="description" content="25 concrete technieken om slimmer met AI te werken en minder te betalen. Geen code nodig. Door Perpetuum.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#051C2C;
-    --navy-2:#0A2A3F;
-    --ink:#1A2B36;
-    --slate:#5A6B76;
-    --line:#E2E6E9;
-    --paper:#FFFFFF;
-    --paper-2:#F6F8F9;
-    --accent:#20124D;
-    --accent-2:#6B4FD2;
+    --ink-deep:#1A1033;      /* diep paars-zwart — kopteksten */
+    --ink:#241A3E;
+    --purple:#5B3FC4;        /* primair Perpetuum-paars */
+    --purple-deep:#31207A;
+    --violet:#8B6FE8;
+    --lavender:#C9BCF2;
+    --pale:#F4F1FB;
+    --teal:#1FB8A6;
+    --magenta:#C45BD4;
     --gold:#C89B2C;
     --gold-bright:#FFBA00;
+    --slate:#5F5878;
+    --line:#E6E1F0;
+    --paper:#FFFFFF;
     --maxw:1160px;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);background:var(--paper);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
-  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:500;color:var(--navy);letter-spacing:-.01em;line-height:1.15;}
-  a{color:var(--accent-2);text-decoration:none;}
+  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);background:var(--paper);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:600;color:var(--ink-deep);letter-spacing:-.015em;line-height:1.12;}
+  a{color:var(--purple);text-decoration:none;}
   a:hover{text-decoration:underline;}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
 
-  .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line);}
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--navy);font-size:15px;letter-spacing:.02em;}
-  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 4px rgba(107,79,210,.15);}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',Georgia,serif;font-weight:600;color:var(--ink-deep);font-size:17px;letter-spacing:.01em;}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 4px rgba(91,63,196,.15);}
+  .topbar .logo{display:flex;align-items:center;}
+  .topbar .logo svg{display:block;}
   .topnav{display:flex;gap:26px;font-size:14px;font-weight:500;}
   .topnav a{color:var(--slate);}
-  .topnav a:hover{color:var(--navy);text-decoration:none;}
+  .topnav a:hover{color:var(--ink-deep);text-decoration:none;}
   @media(max-width:860px){.topnav{display:none;}}
 
-  .hero{background:var(--navy);color:#EAF0F3;position:relative;overflow:hidden;}
-  .hero::after{content:"";position:absolute;right:-140px;top:-140px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(107,79,210,.55),rgba(107,79,210,0) 70%);}
-  .hero::before{content:"";position:absolute;right:120px;bottom:-200px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(0,169,165,.35),rgba(0,169,165,0) 70%);}
-  .hero .wrap{position:relative;z-index:2;padding:104px 32px 96px;}
-  .eyebrow{font-family:'Inter';font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);margin-bottom:26px;}
-  .hero h1{color:#fff;font-size:clamp(38px,6vw,68px);max-width:18ch;margin:0 0 26px;font-weight:500;}
-  .hero .lede{font-size:clamp(18px,2.4vw,22px);color:#B9C6CE;max-width:60ch;line-height:1.55;margin:0;}
-  .hero .meta{margin-top:44px;display:flex;flex-wrap:wrap;gap:14px 40px;font-size:14px;color:#8FA3AD;border-top:1px solid rgba(255,255,255,.12);padding-top:26px;}
-  .hero .meta b{color:#EAF0F3;font-weight:600;}
+  /* ============ COVER — full-width visual met tekst-overlay ============ */
+  .cover{position:relative;min-height:clamp(560px,78vh,760px);display:flex;align-items:center;background:#241A3E;overflow:hidden;}
+  .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;}
+  .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(26,16,51,.82) 0%,rgba(26,16,51,.58) 38%,rgba(26,16,51,0) 66%);}
+  .cover-txt{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:96px 32px;}
+  .cover-title{max-width:560px;}
+  .cover-title h1{font-size:clamp(46px,5.6vw,86px);margin:0;font-weight:600;color:#fff;}
+  .cover-title .yr{display:block;font-family:'Fraunces',Georgia,serif;font-size:clamp(24px,2.6vw,38px);color:var(--lavender);margin-top:10px;font-weight:500;}
+  .cover-title .sub{margin:28px 0 0;font-size:17px;color:#E4DDF7;max-width:42ch;line-height:1.65;}
+  .cover-txt .foot{margin-top:44px;font-size:12.5px;color:#B4A6DB;letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+  @media(max-width:860px){
+    .cover{min-height:520px;}
+    .cover-img{object-position:70% center;}
+    .cover::after{background:linear-gradient(180deg,rgba(26,16,51,.78) 0%,rgba(26,16,51,.45) 55%,rgba(26,16,51,.25) 100%);}
+    .cover-txt{padding:72px 32px;}
+  }
 
-  section{padding:78px 0;border-bottom:1px solid var(--line);}
-  section.alt{background:var(--paper-2);}
-  .kicker{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-  .kicker::before{content:"";width:28px;height:2px;background:var(--gold);display:inline-block;}
-  h2.title{font-size:clamp(28px,4vw,40px);margin:0 0 18px;max-width:22ch;}
-  .section-lede{font-size:19px;color:var(--slate);max-width:64ch;margin:0 0 8px;}
+  .metaband{border-bottom:1px solid var(--line);background:var(--pale);}
+  .metaband .wrap{display:flex;flex-wrap:wrap;gap:10px 44px;padding:18px 32px;font-size:14px;color:var(--slate);}
+  .metaband b{color:var(--ink-deep);font-weight:600;}
 
+  section{padding:82px 0;border-bottom:1px solid var(--line);}
+  section.alt{background:var(--pale);}
+  .kicker{font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  h2.title{font-size:clamp(30px,4.2vw,46px);margin:0 0 20px;max-width:26ch;}
+  h2.title .acc{color:var(--purple);}
+  .section-lede{font-size:19px;color:var(--slate);max-width:66ch;margin:0 0 8px;}
+  .dropcap::first-letter{font-family:'Fraunces',Georgia,serif;font-size:58px;font-weight:600;color:var(--ink-deep);float:left;line-height:.82;padding:6px 10px 0 0;}
+
+  /* ============ Top-10 als genummerde ranglijst met omcirkelde serif-nummers ============ */
   .rank{margin-top:44px;border-top:1px solid var(--line);}
-  .rank .row{display:grid;grid-template-columns:64px 1fr auto;gap:24px;align-items:baseline;padding:22px 6px;border-bottom:1px solid var(--line);transition:background .15s;}
-  .rank .row:hover{background:rgba(107,79,210,.04);}
-  .rank .num{font-family:'Fraunces';font-size:30px;color:var(--accent-2);font-weight:500;line-height:1;}
-  .rank .body h3{font-size:19px;margin:0 0 4px;font-family:'Inter';font-weight:700;color:var(--navy);}
-  .rank .body p{margin:0;color:var(--slate);font-size:15.5px;}
-  .rank .tag{font-size:12.5px;font-weight:600;color:var(--navy);background:#EDE9F7;border:1px solid #DCD5F0;padding:5px 11px;border-radius:100px;white-space:nowrap;}
-  @media(max-width:680px){.rank .row{grid-template-columns:44px 1fr;}.rank .tag{grid-column:2;justify-self:start;margin-top:8px;}}
+  .rank .row{display:grid;grid-template-columns:72px 1fr auto;gap:24px;align-items:center;padding:20px 6px;border-bottom:1px solid var(--line);transition:background .15s;}
+  .rank .row:hover{background:rgba(91,63,196,.04);}
+  .rank .num{font-family:'Fraunces',Georgia,serif;font-size:22px;color:var(--purple-deep);font-weight:500;width:52px;height:52px;border:1.5px solid var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;}
+  .rank .body h3{font-size:18.5px;margin:0 0 4px;font-family:'Fraunces',Georgia,serif;font-weight:600;color:var(--ink-deep);}
+  .rank .body p{margin:0;color:var(--slate);font-size:15.5px;font-family:'Inter';}
+  .rank .tag{font-size:12.5px;font-weight:600;color:var(--purple-deep);background:#EDE9F9;border:1px solid #DCD3F4;padding:5px 11px;border-radius:100px;white-space:nowrap;}
+  @media(max-width:680px){.rank .row{grid-template-columns:52px 1fr;}.rank .tag{grid-column:2;justify-self:start;margin-top:8px;}}
 
+  /* ============ Pull-quote — groot serif in paars, één frase licht ============ */
+  .quote-band{padding:96px 0;background:var(--paper);}
+  .quote-band .wrap{display:grid;grid-template-columns:220px 1fr;gap:56px;align-items:start;}
+  .quote-band .aside{font-size:14.5px;color:var(--slate);line-height:1.6;}
+  .pullquote{margin:0;font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,4.4vw,52px);line-height:1.22;color:var(--purple-deep);font-weight:500;letter-spacing:-.01em;}
+  .pullquote .em{color:var(--violet);}
+  @media(max-width:820px){.quote-band .wrap{grid-template-columns:1fr;gap:26px;}}
+
+  /* ============ Exhibits — rapportstijl: label, statement, graphic, bron ============ */
   .exhibits{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px;}
-  .exhibit{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--accent-2);border-radius:4px;padding:30px 26px;}
-  section.alt .exhibit{background:#fff;}
-  .exhibit .lbl{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);margin-bottom:14px;}
-  .exhibit .fig{font-family:'Fraunces';font-size:52px;font-weight:500;color:var(--navy);line-height:1;letter-spacing:-.02em;}
-  .exhibit .fig small{font-size:24px;color:var(--accent-2);}
-  .exhibit .cap{margin-top:12px;font-size:14.5px;color:var(--slate);line-height:1.5;}
+  .exhibit{background:#fff;border:1px solid var(--line);padding:28px 26px 24px;display:flex;flex-direction:column;}
+  .exhibit .lbl{font-size:12px;font-weight:500;color:var(--slate);margin-bottom:8px;}
+  .exhibit .stmt{font-size:15.5px;font-weight:700;color:var(--ink-deep);line-height:1.45;margin-bottom:22px;}
+  .exhibit .figrow{display:flex;align-items:center;gap:22px;margin-bottom:18px;}
+  .exhibit .fig{font-family:'Fraunces',Georgia,serif;font-size:46px;font-weight:500;color:var(--ink-deep);line-height:1;letter-spacing:-.02em;white-space:nowrap;}
+  .exhibit .fig small{font-size:22px;color:var(--purple);}
+  .exhibit .viz{width:92px;height:92px;flex-shrink:0;}
+  .exhibit .cap{font-size:14px;color:var(--slate);line-height:1.55;flex-grow:1;}
+  .exhibit .src{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--slate);}
+  .exhibit .src b{display:block;color:var(--ink-deep);font-size:12.5px;margin-top:6px;font-family:'Fraunces',Georgia,serif;}
   @media(max-width:820px){.exhibits{grid-template-columns:1fr;}}
 
-  .cat{display:grid;grid-template-columns:230px 1fr;gap:48px;margin-top:54px;}
-  .cat:first-of-type{margin-top:40px;}
+  /* ============ Categorieën — banner + omcirkeld nummer, zoals de 'nine shifts' ============ */
+  .catblock{margin-top:56px;}
+  .catblock:first-of-type{margin-top:44px;}
+  /* Full-bleed categorie-divider over de hele paginabreedte */
+  .catbanner{display:flex;align-items:center;justify-content:center;gap:16px;width:100vw;margin-left:calc(50% - 50vw);padding:15px 32px;margin-bottom:40px;color:#fff;background:linear-gradient(100deg,color-mix(in srgb,var(--bc,var(--purple)) 72%,#1A1033) 0%,var(--bc,var(--purple)) 55%,color-mix(in srgb,var(--bc,var(--purple)) 80%,#fff) 100%);}
+  .catbanner .cbn{font-family:'Fraunces',Georgia,serif;font-size:16px;font-weight:500;width:34px;height:34px;border:1.5px solid rgba(255,255,255,.65);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .catbanner .cbt{font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;}
+  .cat{display:grid;grid-template-columns:230px 1fr;gap:48px;}
   .cat .side{position:sticky;top:96px;align-self:start;}
-  .cat .side .cnum{font-family:'Fraunces';font-size:15px;color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
-  .cat .side h3{font-size:23px;margin:0 0 10px;}
+  .cat .side .circnum{font-family:'Fraunces',Georgia,serif;font-size:24px;color:var(--bc,var(--purple));width:52px;height:52px;border:1.5px solid var(--bc,var(--purple));border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .cat .side h3{font-size:24px;margin:0 0 10px;}
   .cat .side p{font-size:14.5px;color:var(--slate);margin:0;}
-  .cards{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
-  .card{background:var(--paper);padding:24px 26px;}
-  section.alt .card{background:#fff;}
-  .card h4{font-size:17px;margin:0 0 7px;font-family:'Inter';font-weight:700;color:var(--navy);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;}
-  .card h4 .idx{font-family:'Fraunces';color:var(--accent-2);font-size:16px;font-weight:600;min-width:26px;}
-  .card p{margin:0;color:var(--slate);font-size:15px;line-height:1.6;}
+  .cards{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);overflow:hidden;}
+  .card{background:#fff;padding:26px 28px;}
+  .card h4{font-size:18.5px;margin:0 0 8px;font-family:'Fraunces',Georgia,serif;font-weight:600;color:var(--ink-deep);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;}
+  .card h4 .idx{color:var(--purple);font-size:16px;font-weight:500;min-width:26px;}
+  .card p{margin:0;color:var(--slate);font-size:15px;line-height:1.6;font-family:'Inter';}
 
   /* "Zo pas je het toe" blok — geen code, alleen stappen en promptvoorbeelden */
   .how{margin-top:15px;border-top:1px dashed var(--line);padding-top:14px;}
-  .how .hl{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-2);margin-bottom:11px;display:flex;align-items:center;gap:7px;}
-  .how .hl::before{content:"→";color:var(--gold);font-weight:700;}
+  .how .hl{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--purple);margin-bottom:11px;display:flex;align-items:center;gap:7px;font-family:'Inter';}
+  .how .hl::before{content:"→";color:var(--gold-bright);font-weight:700;}
   .how ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;}
-  .how ol.steps li{position:relative;padding:3px 0 3px 32px;font-size:15px;color:var(--ink);margin-bottom:8px;line-height:1.55;counter-increment:s;}
+  .how ol.steps li{position:relative;padding:3px 0 3px 32px;font-size:15px;color:var(--ink);margin-bottom:8px;line-height:1.55;counter-increment:s;font-family:'Inter';}
   .how ol.steps li:last-child{margin-bottom:0;}
-  .how ol.steps li::before{content:counter(s);position:absolute;left:0;top:3px;font-family:'Inter';font-size:11px;font-weight:700;color:#fff;background:var(--accent-2);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;}
-  /* Prompt-voorbeeld blok */
-  .prompt-ex{margin-top:12px;background:#F0EDF9;border-left:3px solid var(--accent-2);border-radius:0 6px 6px 0;padding:12px 16px;font-size:14px;color:var(--ink);line-height:1.6;font-style:italic;}
-  .prompt-ex .lbl{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);margin-bottom:6px;display:block;}
-  .card .win{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--navy);background:#FBF3DC;border:1px solid #EFD9A0;padding:3px 10px;border-radius:100px;}
+  .how ol.steps li::before{content:counter(s);position:absolute;left:0;top:3px;font-family:'Inter';font-size:11px;font-weight:700;color:#fff;background:var(--purple);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;}
+  /* Prompt-voorbeeld — ingesprongen citaat in serif, zoals de survey highlights in het rapport */
+  .prompt-ex{margin-top:14px;padding:2px 0 2px 18px;border-left:2px solid var(--violet);font-family:'Fraunces',Georgia,serif;font-style:normal;font-size:15px;color:var(--ink-deep);line-height:1.6;}
+  .prompt-ex .lbl{font-family:'Inter';font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);margin-bottom:5px;display:block;}
+  .card .win{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--ink-deep);background:#FBF3DC;border:1px solid #EFD9A0;padding:3px 10px;border-radius:100px;font-family:'Inter';}
 
-  .diff{margin-left:auto;align-self:center;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:100px;white-space:nowrap;border:1px solid transparent;flex-shrink:0;}
-  .diff.d1{color:#1E7A54;background:#E7F5EE;border-color:#BFE6D2;}
+  .diff{margin-left:auto;align-self:center;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:100px;white-space:nowrap;border:1px solid transparent;flex-shrink:0;font-family:'Inter';}
+  .diff.d1{color:#0E7D6F;background:#E2F6F2;border-color:#B8E8DF;}
   .diff.d2{color:#9A6B0E;background:#FBF1DC;border-color:#EFD9A0;}
-  .diff.d3{color:#5A47A6;background:#EDE9F7;border-color:#DCD5F0;}
-  .difflegend{display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;margin-top:28px;padding:18px 24px;background:var(--paper-2);border:1px solid var(--line);border-radius:6px;font-size:13.5px;color:var(--slate);}
+  .diff.d3{color:#A23BB0;background:#F9E9FB;border-color:#EDCBF1;}
+  .difflegend{display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;margin-top:28px;padding:18px 24px;background:var(--pale);border:1px solid var(--line);font-size:13.5px;color:var(--slate);}
   .difflegend .item{display:flex;align-items:center;gap:10px;}
   .difflegend .diff{margin-left:0;}
-  .cat .side .mix{margin-top:14px;font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.02em;border-top:1px solid var(--line);padding-top:12px;}
+  .cat .side .mix{margin-top:14px;font-size:12px;font-weight:600;color:var(--ink-deep);letter-spacing:.02em;border-top:1px solid var(--line);padding-top:12px;font-family:'Inter';}
 
-  table{width:100%;border-collapse:collapse;margin-top:38px;font-size:15px;}
+  table{width:100%;border-collapse:collapse;margin-top:38px;font-size:15px;background:#fff;}
   th,td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line);}
-  th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);font-weight:600;}
-  td b{color:var(--navy);}
-  tr:hover td{background:rgba(107,79,210,.03);}
+  th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);font-weight:600;border-bottom:2px solid var(--purple);}
+  td b{color:var(--ink-deep);}
+  tr:hover td{background:rgba(91,63,196,.03);}
 
   .sources{columns:2;column-gap:48px;margin-top:30px;font-size:14.5px;color:var(--slate);}
   .sources p{margin:0 0 12px;break-inside:avoid;line-height:1.5;}
   @media(max-width:680px){.sources{columns:1;}}
-  .note{margin-top:34px;padding:20px 24px;background:var(--paper-2);border-left:3px solid var(--gold);font-size:14.5px;color:var(--slate);border-radius:0 4px 4px 0;}
+  .note{margin-top:34px;padding:20px 24px;background:var(--pale);border:1px solid var(--line);font-size:14.5px;color:var(--slate);}
 
-  footer{background:var(--navy);color:#8FA3AD;padding:64px 0 54px;border:none;}
+  /* ============ CTA-band ============ */
+  .cta-band{background:var(--purple-deep);padding:92px 0;text-align:center;border:none;}
+  .cta-band h2{color:#fff;font-size:clamp(30px,4.2vw,48px);margin:0 auto 16px;max-width:24ch;}
+  .cta-band p{color:#C9BCF2;font-size:17.5px;line-height:1.65;max-width:52ch;margin:0 auto 36px;}
+  .cta-band .btn{display:inline-block;background:var(--gold-bright);color:var(--ink-deep);font-weight:700;font-size:15.5px;padding:16px 36px;border-radius:100px;transition:transform .15s,box-shadow .15s;}
+  .cta-band .btn:hover{text-decoration:none;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .cta-band .alt-contact{margin-top:22px;font-size:14px;color:#8E7DB8;}
+  .cta-band .alt-contact a{color:#C9BCF2;}
+
+  footer{background:var(--ink-deep);color:#A99BC8;padding:64px 0 54px;border:none;}
   footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;align-items:flex-start;}
-  footer .brand{color:#fff;font-size:17px;margin-bottom:12px;}
+  footer .brand{color:#fff;font-size:19px;margin-bottom:12px;}
   footer p{margin:0;font-size:14px;max-width:44ch;line-height:1.6;}
-  footer a{color:#B9A6F0;}
+  footer a{color:#C9BCF2;}
   footer .cta{font-size:14px;}
   footer .cta a{display:inline-block;margin-top:6px;color:#fff;border:1px solid rgba(255,255,255,.25);padding:11px 20px;border-radius:100px;font-weight:500;}
   footer .cta a:hover{background:rgba(255,255,255,.08);text-decoration:none;}
-  .fineprint{border-top:1px solid rgba(255,255,255,.12);margin-top:44px;padding-top:22px;font-size:12.5px;color:#6B808B;}
+  .fineprint{border-top:1px solid rgba(255,255,255,.12);margin-top:44px;padding-top:22px;font-size:12.5px;color:#7E7099;}
 
   @media(max-width:820px){.cat{grid-template-columns:1fr;gap:22px;}.cat .side{position:static;}}
 </style>
@@ -138,49 +183,70 @@
 
 <div class="topbar">
   <div class="wrap">
-    <div class="brand"><span class="dot"></span> Perpetuum</div>
+    <a class="logo" href="https://perpetuum.agency" aria-label="Perpetuum">
+      <svg width="127" height="20" viewBox="0 0 172 27" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Perpetuum logo">
+        <path d="M5.984 11.924H8.288C9.32 11.924 10.148 11.612 10.772 10.988C11.42 10.364 11.744 9.392 11.744 8.072C11.744 6.776 11.468 5.792 10.916 5.12C10.364 4.448 9.44 4.112 8.144 4.112H5.984V11.924ZM0.8 0.295998H9.872C11.192 0.295998 12.296 0.523998 13.184 0.979998C14.096 1.412 14.828 1.988 15.38 2.708C15.932 3.428 16.328 4.256 16.568 5.192C16.808 6.104 16.928 7.04 16.928 8C16.928 9.32 16.724 10.472 16.316 11.456C15.932 12.44 15.38 13.244 14.66 13.868C13.964 14.492 13.112 14.96 12.104 15.272C11.096 15.584 9.98 15.74 8.756 15.74H5.984V26H0.8V0.295998ZM33.832 0.295998V4.544H24.652V10.592H33.292V14.84H24.652V21.752H34.192V26H19.468V0.295998H33.832ZM36.8 0.295998H46.376C48.536 0.295998 50.216 0.847998 51.416 1.952C52.616 3.032 53.216 4.688 53.216 6.92C53.216 8.648 52.868 10.064 52.172 11.168C51.476 12.248 50.396 12.944 48.932 13.256V13.328C50.228 13.52 51.176 13.94 51.776 14.588C52.376 15.236 52.748 16.28 52.892 17.72C52.94 18.2 52.976 18.728 53 19.304C53.024 19.856 53.048 20.48 53.072 21.176C53.12 22.544 53.192 23.588 53.288 24.308C53.432 25.028 53.744 25.52 54.224 25.784V26H48.608C48.344 25.64 48.176 25.232 48.104 24.776C48.032 24.296 47.984 23.804 47.96 23.3L47.816 18.368C47.768 17.36 47.516 16.568 47.06 15.992C46.604 15.416 45.836 15.128 44.756 15.128H41.984V26H36.8V0.295998ZM41.984 11.528H44.144C45.392 11.528 46.352 11.24 47.024 10.664C47.696 10.064 48.032 9.068 48.032 7.676C48.032 5.3 46.832 4.112 44.432 4.112H41.984V11.528ZM61.9879 11.924H64.2919C65.3239 11.924 66.1519 11.612 66.7759 10.988C67.4239 10.364 67.7479 9.392 67.7479 8.072C67.7479 6.776 67.4719 5.792 66.9199 5.12C66.3679 4.448 65.4439 4.112 64.1479 4.112H61.9879V11.924ZM56.8039 0.295998H65.8759C67.1959 0.295998 68.2999 0.523998 69.1879 0.979998C70.0999 1.412 70.8319 1.988 71.3839 2.708C71.9359 3.428 72.3319 4.256 72.5719 5.192C72.8119 6.104 72.9319 7.04 72.9319 8C72.9319 9.32 72.7279 10.472 72.3199 11.456C71.9359 12.44 71.3839 13.244 70.6639 13.868C69.9679 14.492 69.1159 14.96 68.1079 15.272C67.0999 15.584 65.9839 15.74 64.7599 15.74H61.9879V26H56.8039V0.295998ZM89.8359 0.295998V4.544H80.6559V10.592H89.2959V14.84H80.6559V21.752H90.1959V26H75.4719V0.295998H89.8359ZM107.852 0.295998V4.544H102.236V26H97.0519V4.544H91.4359V0.295998H107.852ZM114.961 0.295998V18.224C114.961 18.872 114.997 19.472 115.069 20.024C115.165 20.552 115.321 21.02 115.537 21.428C115.777 21.812 116.089 22.124 116.473 22.364C116.881 22.58 117.385 22.688 117.985 22.688C118.609 22.688 119.113 22.58 119.497 22.364C119.881 22.124 120.181 21.812 120.397 21.428C120.637 21.02 120.793 20.552 120.865 20.024C120.961 19.472 121.009 18.872 121.009 18.224V0.295998H126.193V18.224C126.193 19.856 125.965 21.212 125.509 22.292C125.053 23.348 124.441 24.188 123.673 24.812C122.905 25.436 122.029 25.856 121.045 26.072C120.061 26.288 119.041 26.396 117.985 26.396C116.929 26.396 115.909 26.3 114.925 26.108C113.941 25.916 113.065 25.532 112.297 24.956C111.529 24.356 110.917 23.516 110.461 22.436C110.005 21.356 109.777 19.952 109.777 18.224V0.295998H114.961ZM134.332 0.295998V18.224C134.332 18.872 134.368 19.472 134.44 20.024C134.536 20.552 134.692 21.02 134.908 21.428C135.148 21.812 135.46 22.124 135.844 22.364C136.252 22.58 136.756 22.688 137.356 22.688C137.98 22.688 138.484 22.58 138.868 22.364C139.252 22.124 139.552 21.812 139.768 21.428C140.008 21.02 140.164 20.552 140.236 20.024C140.332 19.472 140.38 18.872 140.38 18.224V0.295998H145.564V18.224C145.564 19.856 145.336 21.212 144.88 22.292C144.424 23.348 143.812 24.188 143.044 24.812C142.276 25.436 141.4 25.856 140.416 26.072C139.432 26.288 138.412 26.396 137.356 26.396C136.3 26.396 135.28 26.3 134.296 26.108C133.312 25.916 132.436 25.532 131.668 24.956C130.9 24.356 130.288 23.516 129.832 22.436C129.376 21.356 129.148 19.952 129.148 18.224V0.295998H134.332ZM148.951 0.295998H156.655L160.327 18.44H160.399L164.107 0.295998H171.775V26H167.023V5.48H166.951L162.379 26H158.347L153.775 5.48H153.703V26H148.951V0.295998Z" fill="#F9C80E"/>
+      </svg>
+    </a>
     <nav class="topnav">
       <a href="#samenvatting">Samenvatting</a>
       <a href="#hefbomen">De cijfers</a>
       <a href="#technieken">Technieken</a>
       <a href="#tools">Tools</a>
       <a href="#bronnen">Bronnen</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </div>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">Perpetuum · Praktische gids</div>
-    <h1>Token-efficiëntie: dezelfde AI, slimmer ingezet</h1>
-    <p class="lede">De meeste hoge AI-rekeningen komen niet door te veel AI — maar door AI die je inefficiënt gebruikt. Dit zijn 25 technieken om verspilling weg te snijden zonder in te leveren op kwaliteit. Geen technische kennis nodig.</p>
-    <div class="meta">
-      <span><b>Auteur</b>&nbsp;&nbsp;Perpetuum</span>
-      <span><b>Voor</b>&nbsp;&nbsp;AI-gebruikers, geen engineers</span>
-      <span><b>Bijgewerkt</b>&nbsp;&nbsp;13 juli 2026</span>
-      <span><b>Leestijd</b>&nbsp;&nbsp;±12 minuten</span>
+<!-- ===================== COVER / TITELSLIDE ===================== -->
+<header class="cover">
+  <img class="cover-img" src="assets/hero-token-efficiency.jpg" alt="Illustratie: een hand houdt een AI-token vast, met een stroom tokens door een trechter">
+  <div class="cover-txt">
+    <div class="cover-title">
+      <h1>Token-<br>efficiëntie</h1>
+      <span class="yr">2026</span>
+      <p class="sub">De praktische gids: 25 technieken om verspilling weg te snijden zonder in te leveren op kwaliteit. Dezelfde AI, slimmer ingezet. Geen technische kennis nodig.</p>
     </div>
+    <div class="foot">Praktische gids · AI-gebruikers, geen engineers</div>
   </div>
 </header>
+
+<div class="metaband">
+  <div class="wrap">
+    <span><b>Auteur</b>&nbsp;&nbsp;Perpetuum</span>
+    <span><b>Voor</b>&nbsp;&nbsp;AI-gebruikers, geen engineers</span>
+    <span><b>Bijgewerkt</b>&nbsp;&nbsp;13 juli 2026</span>
+    <span><b>Leestijd</b>&nbsp;&nbsp;±12 minuten</span>
+  </div>
+</div>
 
 <!-- ===================== EXECUTIVE SUMMARY ===================== -->
 <section id="samenvatting">
   <div class="wrap">
     <div class="kicker">Overzicht</div>
-    <h2 class="title">De tien grootste hefbomen</h2>
-    <p class="section-lede">Elk woord dat je AI in- en uitstopt is een token, en tokens zijn geld. Het goede nieuws: het grootste deel van dat verbruik is verspilling die je vandaag nog kunt wegsnijden. Deze tien leveren het meeste op.</p>
+    <h2 class="title">De <span class="acc">tien</span> grootste hefbomen</h2>
+    <p class="section-lede dropcap">Elk woord dat je AI in- en uitstopt is een token, en tokens zijn geld. De meeste hoge AI-rekeningen komen niet door te veel AI, maar door AI die je inefficiënt gebruikt. Het goede nieuws: het grootste deel van dat verbruik is verspilling die je vandaag nog kunt wegsnijden. Deze tien leveren het meeste op.</p>
     <div class="rank">
-      <div class="row"><div class="num">01</div><div class="body"><h3>Herhaal jezelf niet in je instructies</h3><p>Lange, herhaalde systeem-instructies kosten bij elke vraag geld. Eén bondige versie doet hetzelfde werk.</p></div><div class="tag">Direct</div></div>
-      <div class="row"><div class="num">02</div><div class="body"><h3>Vraag om kortere antwoorden</h3><p>Het antwoord van het model is de duurste kant. Eén zin in je instructie snijdt direct in de kosten.</p></div><div class="tag">Direct</div></div>
-      <div class="row"><div class="num">03</div><div class="body"><h3>Stuur alleen wat het model écht nodig heeft</h3><p>Plak niet het hele document in de chat. Knip het relevante stuk eruit en stuur alleen dat mee.</p></div><div class="tag">Direct</div></div>
-      <div class="row"><div class="num">04</div><div class="body"><h3>Gebruik het goedkoopste model dat het aankan</h3><p>Niet elke taak heeft je duurste model nodig. Simpele vragen naar een kleiner model = grote besparing.</p></div><div class="tag">Direct</div></div>
-      <div class="row"><div class="num">05</div><div class="body"><h3>Vraag om een concreet formaat, geen proza</h3><p>"Antwoord in een lijst van 5 punten" is goedkoper dan "schrijf een uitgebreide analyse".</p></div><div class="tag">Direct</div></div>
-      <div class="row"><div class="num">06</div><div class="body"><h3>Vat lange gesprekken tussendoor samen</h3><p>In een lang gesprek groeit de context bij elke beurt. Vraag het model zijn eigen samenvatting te maken.</p></div><div class="tag">Direct</div></div>
-      <div class="row"><div class="num">07</div><div class="body"><h3>Stel vaste instructies in als systeemprompt</h3><p>Platforms zoals Claude.ai en ChatGPT laten je een vaste "persoonlijkheid" instellen — zodat je die niet bij elke vraag opnieuw hoeft te typen.</p></div><div class="tag">Gemiddeld</div></div>
-      <div class="row"><div class="num">08</div><div class="body"><h3>Verwerk bulktaken in een keer</h3><p>Veel platforms bieden een korting van 50% voor niet-urgente taken die je in bulk aanbiedt (batch-verwerking).</p></div><div class="tag">Gemiddeld</div></div>
-      <div class="row"><div class="num">09</div><div class="body"><h3>Splits grote documenten op</h3><p>Stuur niet het hele boek; vraag het model om deel voor deel te verwerken. Minder tokens per call, zelfde resultaat.</p></div><div class="tag">Gemiddeld</div></div>
+      <div class="row"><div class="num">1</div><div class="body"><h3>Herhaal jezelf niet in je instructies</h3><p>Lange, herhaalde systeem-instructies kosten bij elke vraag geld. Eén bondige versie doet hetzelfde werk.</p></div><div class="tag">Direct</div></div>
+      <div class="row"><div class="num">2</div><div class="body"><h3>Vraag om kortere antwoorden</h3><p>Het antwoord van het model is de duurste kant. Eén zin in je instructie snijdt direct in de kosten.</p></div><div class="tag">Direct</div></div>
+      <div class="row"><div class="num">3</div><div class="body"><h3>Stuur alleen wat het model écht nodig heeft</h3><p>Plak niet het hele document in de chat. Knip het relevante stuk eruit en stuur alleen dat mee.</p></div><div class="tag">Direct</div></div>
+      <div class="row"><div class="num">4</div><div class="body"><h3>Gebruik het goedkoopste model dat het aankan</h3><p>Niet elke taak heeft je duurste model nodig. Simpele vragen naar een kleiner model = grote besparing.</p></div><div class="tag">Direct</div></div>
+      <div class="row"><div class="num">5</div><div class="body"><h3>Vraag om een concreet formaat, geen proza</h3><p>"Antwoord in een lijst van 5 punten" is goedkoper dan "schrijf een uitgebreide analyse".</p></div><div class="tag">Direct</div></div>
+      <div class="row"><div class="num">6</div><div class="body"><h3>Vat lange gesprekken tussendoor samen</h3><p>In een lang gesprek groeit de context bij elke beurt. Vraag het model zijn eigen samenvatting te maken.</p></div><div class="tag">Direct</div></div>
+      <div class="row"><div class="num">7</div><div class="body"><h3>Stel vaste instructies in als systeemprompt</h3><p>Platforms zoals Claude.ai en ChatGPT laten je een vaste "persoonlijkheid" instellen, zodat je die niet bij elke vraag opnieuw hoeft te typen.</p></div><div class="tag">Gemiddeld</div></div>
+      <div class="row"><div class="num">8</div><div class="body"><h3>Verwerk bulktaken in een keer</h3><p>Veel platforms bieden een korting van 50% voor niet-urgente taken die je in bulk aanbiedt (batch-verwerking).</p></div><div class="tag">Gemiddeld</div></div>
+      <div class="row"><div class="num">9</div><div class="body"><h3>Splits grote documenten op</h3><p>Stuur niet het hele boek; vraag het model om deel voor deel te verwerken. Minder tokens per call, zelfde resultaat.</p></div><div class="tag">Gemiddeld</div></div>
       <div class="row"><div class="num">10</div><div class="body"><h3>Hergebruik antwoorden voor vergelijkbare vragen</h3><p>Hou een intern "antwoordbibliotheek" bij voor terugkerende vragen. Sla de LLM over als je het antwoord al hebt.</p></div><div class="tag">Gemiddeld</div></div>
     </div>
+  </div>
+</section>
+
+<!-- ===================== PULL QUOTE ===================== -->
+<section class="quote-band" aria-label="Kernboodschap">
+  <div class="wrap">
+    <div class="aside">De rode draad door alle 25 technieken in deze gids, van je eerste prompt tot de inrichting van je hele AI-stack.</div>
+    <p class="pullquote">Goedkoper werken is niet minder AI gebruiken. Het is dezelfde AI, <span class="em">slimmer ingezet</span>, met de verspilling eruit gesneden.</p>
   </div>
 </section>
 
@@ -188,23 +254,49 @@
 <section id="hefbomen" class="alt">
   <div class="wrap">
     <div class="kicker">De cijfers</div>
-    <h2 class="title">Wat het oplevert</h2>
+    <h2 class="title">Wat het <span class="acc">oplevert</span></h2>
     <p class="section-lede">Drie geverifieerde besparingen die de business-case dragen.</p>
     <div class="exhibits">
       <div class="exhibit">
-        <div class="lbl">Exhibit 1 · Vaste instructies cachen</div>
-        <div class="fig">−90<small>%</small></div>
+        <div class="lbl">Exhibit 1</div>
+        <div class="stmt">Vaste instructies cachen is de grootste enkele besparing die je kunt inrichten.</div>
+        <div class="figrow">
+          <svg class="viz" width="92" height="92" viewBox="0 0 100 100" shape-rendering="geometricPrecision" aria-hidden="true">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#E6DFF7" stroke-width="14"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#5B3FC4" stroke-width="14" pathLength="100" stroke-dasharray="90 10" stroke-dashoffset="25"/>
+          </svg>
+          <div class="fig">−90<small>%</small></div>
+        </div>
         <div class="cap">Kostenreductie op hergebruikte instructies bij Anthropic Claude. Als je vaste tekst automatisch hergebruikt wordt, betaal je nog maar 10% van de normale prijs per herhaling.</div>
+        <div class="src">Bron: Anthropic prompt caching, geverifieerd 13 juli 2026<b>Perpetuum</b></div>
       </div>
       <div class="exhibit">
-        <div class="lbl">Exhibit 2 · Model kiezen op moeilijkheid</div>
-        <div class="fig">−50–85<small>%</small></div>
+        <div class="lbl">Exhibit 2</div>
+        <div class="stmt">Simpele taken naar een goedkoper model sturen halveert de rekening. Minstens.</div>
+        <div class="figrow">
+          <svg class="viz" width="92" height="92" viewBox="0 0 100 100" shape-rendering="geometricPrecision" aria-hidden="true">
+            <path d="M28 8 L48 28 L28 48 L8 28 Z" fill="#31207A"/>
+            <path d="M72 8 L92 28 L72 48 L52 28 Z" fill="#5B3FC4"/>
+            <path d="M28 52 L48 72 L28 92 L8 72 Z" fill="#8B6FE8"/>
+            <path d="M72 52 L92 72 L72 92 L52 72 Z" fill="#C9BCF2"/>
+          </svg>
+          <div class="fig">−50–85<small>%</small></div>
+        </div>
         <div class="cap">Besparing op gemengd werk door simpele taken naar een goedkoper model te sturen en moeilijke taken naar het dure model.</div>
+        <div class="src">Bron: o.a. RouteLLM (arXiv:2406.18665)<b>Perpetuum</b></div>
       </div>
       <div class="exhibit">
-        <div class="lbl">Exhibit 3 · Bulk-korting</div>
-        <div class="fig">−50<small>%</small></div>
-        <div class="cap">Vaste korting die zowel Anthropic als OpenAI geven op taken die niet direct hoeven — zoals het verwerken van grote hoeveelheden tekst buiten kantooruren.</div>
+        <div class="lbl">Exhibit 3</div>
+        <div class="stmt">Niet-urgente bulktaken leveren bij beide grote aanbieders een vaste korting op.</div>
+        <div class="figrow">
+          <svg class="viz" width="92" height="92" viewBox="0 0 100 100" shape-rendering="geometricPrecision" aria-hidden="true">
+            <circle cx="50" cy="56" r="38" fill="#31207A"/>
+            <circle cx="50" cy="40" r="26" fill="#2BD4BE"/>
+          </svg>
+          <div class="fig">−50<small>%</small></div>
+        </div>
+        <div class="cap">Vaste korting die zowel Anthropic als OpenAI geven op taken die niet direct hoeven, zoals het verwerken van grote hoeveelheden tekst buiten kantooruren.</div>
+        <div class="src">Bron: Anthropic Message Batches &amp; OpenAI Batch API, geverifieerd 13 juli 2026<b>Perpetuum</b></div>
       </div>
     </div>
   </div>
@@ -214,8 +306,8 @@
 <section id="technieken">
   <div class="wrap">
     <div class="kicker">De volledige gids</div>
-    <h2 class="title">25 technieken in vijf categorieën</h2>
-    <p class="section-lede">Van iets wat je nu direct kunt aanpassen tot slimmere gewoontes voor dagelijks gebruik. Elke techniek heeft een <b>moeilijkheidslabel</b> en een <b>"Zo pas je het toe"</b>-blok — concreet, zonder technische kennis.</p>
+    <h2 class="title"><span class="acc">25 technieken</span> in vijf categorieën</h2>
+    <p class="section-lede">Van iets wat je nu direct kunt aanpassen tot slimmere gewoontes voor dagelijks gebruik. Elke techniek heeft een <b>moeilijkheidslabel</b> en een <b>"Zo pas je het toe"</b>-blok: concreet, zonder technische kennis.</p>
 
     <div class="difflegend">
       <span class="item"><span class="diff d1">Direct</span> nu toe te passen, geen technische kennis nodig</span>
@@ -224,9 +316,11 @@
     </div>
 
     <!-- Cat 1: Hoe je schrijft -->
-    <div class="cat">
+    <div class="catblock" style="--bc:#5B3FC4">
+      <span class="catbanner"><span class="cbn">01</span><span class="cbt">Hoe je schrijft</span></span>
+      <div class="cat">
       <div class="side">
-        <div class="cnum">Categorie 01</div>
+        <div class="circnum">1</div>
         <h3>Hoe je schrijft</h3>
         <p>De manier waarop je een vraag formuleert bepaalt hoeveel tokens het kost. Geen technische kennis nodig.</p>
         <div class="mix">3× Direct · 1× Gemiddeld</div>
@@ -242,8 +336,8 @@
               <li>Vervang alinea's door korte zinnen of bulletpoints.</li>
               <li>Test: geeft het model hetzelfde antwoord? Zo ja, de kortere versie werkt.</li>
             </ol>
-            <div class="prompt-ex"><span class="lbl">Voorbeeld — voor</span>"Je bent een vriendelijke, behulpzame AI-assistent die altijd beleefd is en de gebruiker zo goed mogelijk helpt. Wees altijd respectvol en professioneel in je toon..."</div>
-            <div class="prompt-ex"><span class="lbl">Voorbeeld — na (zelfde resultaat)</span>"Rol: klantenservice. Taal: NL. Toon: bondig en vriendelijk."</div>
+            <div class="prompt-ex"><span class="lbl">Voorbeeld · voor</span>"Je bent een vriendelijke, behulpzame AI-assistent die altijd beleefd is en de gebruiker zo goed mogelijk helpt. Wees altijd respectvol en professioneel in je toon..."</div>
+            <div class="prompt-ex"><span class="lbl">Voorbeeld · na (zelfde resultaat)</span>"Rol: klantenservice. Taal: NL. Toon: bondig en vriendelijk."</div>
           </div>
           <span class="win">Vaak 20–40% minder tokens in je instructie</span>
         </div>
@@ -281,20 +375,23 @@
             <ol class="steps">
               <li>Begin met je huidige aantal voorbeelden als nulmeting.</li>
               <li>Halveer het aantal voorbeelden en kijk of het resultaat gelijk blijft.</li>
-              <li>Ga door tot de kwaliteit zakt — één stap terug is je optimum.</li>
+              <li>Ga door tot de kwaliteit zakt. Eén stap terug is je optimum.</li>
             </ol>
-            <div class="prompt-ex"><span class="lbl">Voorbeeld — van 5 voorbeelden naar 1</span>"Herschrijf de volgende zin in een actieve, directe stijl. Voorbeeld: 'Er wordt een vergadering gehouden' wordt 'We houden een vergadering'. Herschrijf nu: [tekst]"</div>
+            <div class="prompt-ex"><span class="lbl">Voorbeeld · van 5 voorbeelden naar 1</span>"Herschrijf de volgende zin in een actieve, directe stijl. Voorbeeld: 'Er wordt een vergadering gehouden' wordt 'We houden een vergadering'. Herschrijf nu: [tekst]"</div>
           </div>
           <span class="win">Kan honderden tokens per call schelen</span>
         </div>
 
       </div>
+      </div>
     </div>
 
     <!-- Cat 2: Wat je meestuurt -->
-    <div class="cat">
+    <div class="catblock" style="--bc:#8B6FE8">
+      <span class="catbanner"><span class="cbn">02</span><span class="cbt">Wat je meestuurt</span></span>
+      <div class="cat">
       <div class="side">
-        <div class="cnum">Categorie 02</div>
+        <div class="circnum">2</div>
         <h3>Wat je meestuurt</h3>
         <p>De hoeveelheid tekst die je in de chat plakt bepaalt je inputkosten. Minder is vrijwel altijd beter.</p>
         <div class="mix">2× Direct · 2× Gemiddeld · 1× Met hulp</div>
@@ -371,12 +468,15 @@
         </div>
 
       </div>
+      </div>
     </div>
 
     <!-- Cat 3: Slimme instellingen -->
-    <div class="cat">
+    <div class="catblock" style="--bc:#31207A">
+      <span class="catbanner"><span class="cbn">03</span><span class="cbt">Slimme instellingen</span></span>
+      <div class="cat">
       <div class="side">
-        <div class="cnum">Categorie 03</div>
+        <div class="circnum">3</div>
         <h3>Slimme instellingen</h3>
         <p>Een kleine instelling kan een grote, blijvende besparing opleveren.</p>
         <div class="mix">2× Direct · 2× Gemiddeld · 1× Met hulp</div>
@@ -390,7 +490,7 @@
             <ol class="steps">
               <li>Ga in Claude.ai naar Instellingen → Profiel → "Aangepaste instructies".</li>
               <li>In ChatGPT: klik op je naam → Mijn GPT's → of via Instellingen → Persoonlijk.</li>
-              <li>Schrijf je vaste instructie eenmalig (bondig — zie techniek 1).</li>
+              <li>Schrijf je vaste instructie eenmalig (bondig, zie techniek 1).</li>
               <li>Klaar. Het platform voegt die instructie automatisch toe, zonder dat jij het elke keer hoeft te typen.</li>
             </ol>
             <div class="prompt-ex"><span class="lbl">Voorbeeld systeemprompt</span>"Ik werk als marketingmanager. Schrijf altijd in het Nederlands. Toon: professioneel maar direct. Antwoorden: bondig, maximaal 5 punten tenzij ik anders vraag."</div>
@@ -418,7 +518,7 @@
             <ol class="steps">
               <li>Inventariseer taken die niet direct hoeven: grote hoeveelheden e-mails samenvatten, productteksten vertalen, rapporten analyseren.</li>
               <li>Vraag je technische collega of Perpetuum om dit als "batch-job" in te richten.</li>
-              <li>De job draait buiten kantooruren. 's Ochtends heb je de resultaten — voor de helft van de prijs.</li>
+              <li>De job draait buiten kantooruren. 's Ochtends heb je de resultaten, voor de helft van de prijs.</li>
             </ol>
           </div>
           <span class="win">Vaste 50% korting · beide grote aanbieders</span>
@@ -452,12 +552,15 @@
         </div>
 
       </div>
+      </div>
     </div>
 
     <!-- Cat 4: Hoe je antwoorden ontvangt -->
-    <div class="cat">
+    <div class="catblock" style="--bc:#1FB8A6">
+      <span class="catbanner"><span class="cbn">04</span><span class="cbt">Hoe je antwoorden ontvangt</span></span>
+      <div class="cat">
       <div class="side">
-        <div class="cnum">Categorie 04</div>
+        <div class="circnum">4</div>
         <h3>Hoe je antwoorden ontvangt</h3>
         <p>Het antwoord is de duurste kant. Stuur het model in de juiste richting en betaal alleen voor wat je nodig hebt.</p>
         <div class="mix">2× Direct · 2× Gemiddeld</div>
@@ -510,19 +613,22 @@
               <li>Splits je grote vraag op in losse deelvragen.</li>
               <li>Stel de eerste. Lees het antwoord.</li>
               <li>Ga alleen verder met de volgende vraag als je het vorige antwoord hebt verwerkt en er behoefte aan hebt.</li>
-              <li>Stop zodra je genoeg hebt — betaal alleen voor wat je gelezen hebt.</li>
+              <li>Stop zodra je genoeg hebt. Zo betaal je alleen voor wat je gelezen hebt.</li>
             </ol>
           </div>
           <span class="win">Betaal alleen voor wat je nodig hebt</span>
         </div>
 
       </div>
+      </div>
     </div>
 
     <!-- Cat 5: Slimmer organiseren -->
-    <div class="cat">
+    <div class="catblock" style="--bc:#C45BD4">
+      <span class="catbanner"><span class="cbn">05</span><span class="cbt">Slimmer organiseren</span></span>
+      <div class="cat">
       <div class="side">
-        <div class="cnum">Categorie 05</div>
+        <div class="circnum">5</div>
         <h3>Slimmer organiseren</h3>
         <p>Structurele gewoontes die op de lange termijn grote besparingen opleveren.</p>
         <div class="mix">1× Direct · 3× Gemiddeld · 3× Met hulp</div>
@@ -537,7 +643,7 @@
               <li>Begin met de vijf prompts die je het vaakst gebruikt.</li>
               <li>Sla ze op in een gedeeld Notion-, Confluence- of Google Docs-document.</li>
               <li>Moedig collega's aan om hun beste prompts toe te voegen.</li>
-              <li>Review het document elk kwartaal — zijn ze nog actueel?</li>
+              <li>Review het document elk kwartaal: zijn ze nog actueel?</li>
             </ol>
           </div>
           <span class="win">Iedereen start efficiënter, minder trial-and-error</span>
@@ -604,7 +710,7 @@
               <li>Verzamel de tien meest gebruikte prompts in jullie organisatie.</li>
               <li>Noteer welke modellen jullie gebruiken en voor welke taken.</li>
               <li>Vraag Perpetuum (of een interne AI-lead) om die te reviewen op efficiëntie.</li>
-              <li>Implementeer de aanbevelingen — één middag werk kan maanden besparing opleveren.</li>
+              <li>Implementeer de aanbevelingen. Eén middag werk kan maanden besparing opleveren.</li>
             </ol>
           </div>
           <span class="win">Structurele besparing op de hele organisatie</span>
@@ -612,7 +718,7 @@
 
         <div class="card">
           <h4><span class="idx">25</span>Zet een automatische compressiestap in<span class="diff d3">Met hulp</span></h4>
-          <p>Bij grote AI-pijplijnen kan een goedkoop klein model de context automatisch comprimeren vóór die naar het dure model gaat. Dit is de meest geavanceerde besparing — maar ook de meest schaalbare.</p>
+          <p>Bij grote AI-pijplijnen kan een goedkoop klein model de context automatisch comprimeren vóór die naar het dure model gaat. Dit is de meest geavanceerde besparing, maar ook de meest schaalbare.</p>
           <div class="how"><div class="hl">Zo pas je het toe</div>
             <ol class="steps">
               <li>Dit vereist een technische inrichting (tool zoals LLMLingua of een compressiestap in een n8n-workflow).</li>
@@ -624,6 +730,7 @@
         </div>
 
       </div>
+      </div>
     </div>
   </div>
 </section>
@@ -632,7 +739,7 @@
 <section id="tools" class="alt">
   <div class="wrap">
     <div class="kicker">Gereedschap</div>
-    <h2 class="title">Platforms &amp; tools om mee te beginnen</h2>
+    <h2 class="title">Platforms &amp; tools om mee te <span class="acc">beginnen</span></h2>
     <p class="section-lede">Geen code nodig voor de meeste. Een overzicht van wat je vandaag kunt gebruiken.</p>
     <table>
       <thead><tr><th>Tool</th><th>Waarvoor</th><th>Moeilijkheid</th></tr></thead>
@@ -656,11 +763,11 @@
     <h2 class="title">Bronnen</h2>
     <p class="section-lede">Samengesteld uit vendor-documentatie, academische papers en praktijk uit de AI-community. Headline-cijfers live geverifieerd op 13 juli 2026.</p>
     <div class="sources">
-      <p>Anthropic — prompt caching · docs.anthropic.com/en/docs/build-with-claude/prompt-caching ✅</p>
-      <p>Anthropic — batch processing · docs.anthropic.com/en/docs/build-with-claude/batch-processing</p>
-      <p>OpenAI — prompt caching · platform.openai.com/docs/guides/prompt-caching ✅</p>
-      <p>OpenAI — Batch API · platform.openai.com/docs/guides/batch ✅</p>
-      <p>OpenAI — structured outputs · platform.openai.com/docs/guides/structured-outputs</p>
+      <p>Anthropic, prompt caching · docs.anthropic.com/en/docs/build-with-claude/prompt-caching ✅</p>
+      <p>Anthropic, batch processing · docs.anthropic.com/en/docs/build-with-claude/batch-processing</p>
+      <p>OpenAI, prompt caching · platform.openai.com/docs/guides/prompt-caching ✅</p>
+      <p>OpenAI, Batch API · platform.openai.com/docs/guides/batch ✅</p>
+      <p>OpenAI, structured outputs · platform.openai.com/docs/guides/structured-outputs</p>
       <p>LLMLingua (Microsoft Research) · arXiv:2310.05736</p>
       <p>LongLLMLingua · arXiv:2310.06839</p>
       <p>LLMLingua-2 · arXiv:2403.12968</p>
@@ -671,18 +778,28 @@
   </div>
 </section>
 
+<!-- ===================== CTA ===================== -->
+<section class="cta-band" id="contact">
+  <div class="wrap">
+    <h2>Wil je meer leren over optimaal AI-gebruik?</h2>
+    <p>Van een korte doorlichting van jullie prompts en modellen tot een volledig ingerichte, betaalbare AI-pijplijn: wij helpen je de volgende stap te zetten.</p>
+    <a class="btn" href="https://perpetuum.agency">Neem contact met ons op</a>
+    <div class="alt-contact">Of mail direct naar <a href="mailto:sezayi@perpetuum.agency">sezayi@perpetuum.agency</a></div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div>
       <div class="brand"><span class="dot"></span> Perpetuum</div>
-      <p>Wij maken organisaties AI-ready en future-proof — van eerste experiment tot een betaalbare, opschaalbare pijplijn.</p>
+      <p>Wij maken organisaties AI-ready en future-proof, van eerste experiment tot een betaalbare, opschaalbare pijplijn.</p>
     </div>
     <div class="cta">
       Efficiëntie inrichten in je eigen AI-stack?<br>
       <a href="https://perpetuum.agency">perpetuum.agency →</a>
     </div>
   </div>
-  <div class="wrap"><div class="fineprint">© 2026 Perpetuum · Token-efficiëntie — De praktische gids · Goedkoper werken is niet minder AI gebruiken. Het is dezelfde AI, slimmer ingezet.</div></div>
+  <div class="wrap"><div class="fineprint">© 2026 Perpetuum · Token-efficiëntie 2026, de praktische gids · Goedkoper werken is niet minder AI gebruiken. Het is dezelfde AI, slimmer ingezet.</div></div>
 </footer>
 
 </body>
